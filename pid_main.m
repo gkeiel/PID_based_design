@@ -1,0 +1,41 @@
+% 05/25/2020 Keiel G.
+clc; clear; close all; format shortg;
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% design parameters (ex: sig = 125)
+sig = input('poles real part constraint: ');
+sel = input('select controller: [P]/[PI]/[PD]/[PID]: ','s');
+p   = 10000;      % derivative high-frequency pole
+
+% UPS reference
+V   = 127;       % reference RMS voltage
+f   = 50;        % reference frequency
+
+% non-linear load model
+R_L = 6.58;                     % resistance 
+[ nld ] = load_model( V,R_L );  % harmonics of current (open to edit)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DESIGN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% import UPS uncertain model, PID and build augmented model x_a = [ x' x_c' ]'
+[ ups ] = unc_ups_model( R_L );
+[ pid ] = pid_model( p, sel );
+[ agm ] = unc_agm_model( ups, pid );
+
+% compute state-feedback matrix K for regional pole placement
+[ K ] = lmi_regional( agm, sig, p );                                             
+
+% PID controller and closed-loop transfer functions
+[ pid_tf, cl_tf, cl_tf_nl, id_tf, k_f ] = unc_get_tf( pid, agm, K, f );
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RESULTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PID + current feedback (k_a) and feedforward (k_f) gains
+gains;
+
+% simulate
+simulate;
+
+% plot
+plot_res;
