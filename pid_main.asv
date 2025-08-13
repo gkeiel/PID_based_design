@@ -6,7 +6,7 @@ clc; clear; close all; format shortg;
 % design parameters (ex: sig = 125)
 sig = input('poles real part constraint: ');
 sel = input('select controller: [P]/[PI]/[PD]/[PID]: ','s');
-p   = sig*2;     % derivative high-frequency pole
+p   = 10000;      % derivative high-frequency pole
 
 % UPS reference
 V   = 127;       % reference RMS voltage

@@ -1,6 +1,33 @@
 # PID-based robust design
 
-A code to compute robust proportional-integral-derivative (PID) and current feedback controller to ensure uninterruptible power supply (UPS) stability and performance. PID and current gain tuned by means of regional pole placement with LMI. Although inverter switching effects are not considered, output plotted without graphical environment facilitates learning and brief analysis of the resulting controller.
+A code to compute robust proportional-integral-derivative (PID) and current feedback controllers to ensure uninterruptible power supply (UPS) stability and performance, whose gains are tuned by means of regional pole placement with LMIs. Although inverter switching effects are not considered, the output plotted without a graphical environment facilitates learning and analysis of the resulting controller.
+
+Consider a closed-loop in the form
+
+<img width="898" height="276" alt="pmr_closed_loop" src="https://github.com/user-attachments/assets/1cb626d1-af1d-46f6-9cc8-a0227947a565"/>
+
+being PID a controller with transfer function
+
+$$C(s) = \frac{u_v(s)}{e(s)} = k_{p} +\frac{k_i}{s} +\frac{k_d s}{s +p}$$
+
+with selectable structure where $k_p$, $k_i$, and $k_{d}$ are gains to be determined.
+
+For a complete PID structure, the control law shown can be rewritten as
+
+$$u(t) = Kx_{a}(t) +k_{2}r(t)$$
+
+where $x_{a}(t) = [x'(t)\ x_{c}'(t)]' \in \mathbb{R}^{2+2}$ is the augmented state and
+
+$$K = [k_1\quad k_2\quad k_3\quad k_4]$$
+
+resulting in
+
+$$k_c = k_1$$
+$$k_i = k_4/p$$
+$$k_d = -(k_3 -k_i)/p$$
+$$k_p = -k_2 -k_d$$
+
+##
 
 Main file named as 'pid\_main.m'. Only the following specification are required:
 - The desired real part of the smallest pole of the closed-loop system (sig)

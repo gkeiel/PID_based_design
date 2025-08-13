@@ -24,10 +24,10 @@ v_o    = lsim( cl_tf_nl,r,t );
 v_o_l  = y{1};
 i_o_l  = i{1};
 u_l    = lsim( pid_tf, r-v_o_l',t )...
-        +k_a*lsim( cl_tf*tf([ups.Cf 1/R_L],1),r,t ) +k_f*r';
+        +k_c*lsim( cl_tf*tf([ups.Cf 1/R_L],1),r,t ) +k_f*r';
 
 % output voltage and current for non-linear load
 v_o_nl = sum( cat(h, y{:}), h);
 i_o_nl = sum( cat(h, i{:}), h);
 u_nl   = lsim( pid_tf, r-v_o_nl',t )...
-        +k_a*lsim( cl_tf*tf([ups.Cf 1/R_L],1),r,t ) +k_f*r';
+        +k_c*lsim( cl_tf*tf([ups.Cf 1/R_L],1),r,t ) +k_f*r';

@@ -11,7 +11,7 @@ C_a  = agm.C_a;
 [n,p]  = size(B_a);
 Q      = sdpvar(n,n, 'symmetric');   % n x n symmetric variable
 W      = sdpvar(p,n, 'full');        % n x n variable
-r      = hfp;
+r      = 10000;
 
 % short form
 Sigma1 = A1_a*Q +B_a*W;
