@@ -4,7 +4,7 @@ A code to compute robust proportional-integral-derivative (PID) and current feed
 
 Consider a closed-loop in the form
 
-<img width="898" height="276" alt="pmr_closed_loop" src="https://github.com/user-attachments/assets/1cb626d1-af1d-46f6-9cc8-a0227947a565"/>
+<img width="898" height="276" alt="pid_closed_loop" src="https://github.com/user-attachments/assets/51b00252-d6f8-4ab6-a0e1-1d70a531b7d2"/>
 
 being PID a controller with transfer function
 
@@ -27,6 +27,8 @@ $$k_i = k_4/p$$
 $$k_d = -(k_3 -k_i)/p$$
 $$k_p = -k_2 -k_d$$
 
+Unfortunately the derivative gain $k_d$ is not explicitly optimized but computed from a linear combination of $K$, therefore positive values are not guaranteed. Consider reformulating the PID controller if needed.
+
 ##
 
 Main file named as 'pid\_main.m'. Only the following specification are required:
@@ -35,12 +37,12 @@ Main file named as 'pid\_main.m'. Only the following specification are required:
 
 Consider an example of a PID with sig = 50 where the following output voltage response is obtained:
 
-k_p = 3.923, k_i = 360.761, k_d = 0.0002, k_a = -5.086
+k_p = 3.923, k_i = 360.761, k_d = 0.0002, k_c = -5.086
 <img width="1920" height="926" alt="PID_based_design_sig50" src="https://github.com/user-attachments/assets/5e0f8cae-44d6-4d79-ab87-2650be514871" />
 
 Considering a PID with sig = 500 the following output voltage response is obtained:
 
-k_p = 4.962, k_i = 3513.727, k_d = 0.00018, k_a = -5.590
+k_p = 4.962, k_i = 3513.727, k_d = 0.00018, k_c = -5.590
 <img width="1920" height="926" alt="PID_based_design_sig500" src="https://github.com/user-attachments/assets/67a81cd1-77ab-4a5b-9afc-0fc2d3f4eb3e" />
 
 Note how the tracking error is reduced with the increase of sig, at the cost of a higher control signal. Moreover, robustness to load variation (inside bounds) is guaranteed. The tracking error is minimized but NOT ELIMINATED, thus consider using a reference-frame transformation or a PMR controller for better response.
